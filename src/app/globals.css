@@ -1,1 +1,87 @@
 @import "tailwindcss";
+
+/* ───── Font (variabel CSS dari next/font di layout.tsx) ───── */
+@theme inline {
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, Menlo, monospace;
+}
+
+/* ───── Palet "Dark Futuristic" ───── */
+@theme {
+  /* Latar & permukaan */
+  --color-latar: #0a0c10;
+  --color-panel: #0e1117;
+  --color-panel-2: #121620;
+  --color-trek: #1b2030;
+
+  /* Garis */
+  --color-garis: rgb(232 234 240 / 0.08);
+  --color-garis-kuat: rgb(232 234 240 / 0.14);
+
+  /* Teks */
+  --color-teks: #e8eaf0;
+  --color-redup: #9aa0ad;
+
+  /* Aksen */
+  --color-aksen: #5ce1d6;
+  --color-aksen-terang: #9af0e8;
+  --color-amber: #f5b86a;
+
+  /* Efek */
+  --shadow-sorot:
+    0 0 0 4px rgb(92 225 214 / 0.08), 0 24px 60px -20px rgb(92 225 214 / 0.25);
+}
+
+/* Latar bergaris kotak-kotak khas arah A */
+@utility latar-grid {
+  background-color: var(--color-latar);
+  background-image:
+    linear-gradient(rgb(232 234 240 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(232 234 240 / 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+
+  @media (width < 40rem) {
+    background-size: 48px 48px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-latar);
+  color: var(--color-teks);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: rgb(92 225 214 / 0.3);
+}
+
+/* Cincin fokus yang jelas saat navigasi pakai keyboard */
+:focus-visible {
+  outline: 2px solid var(--color-aksen);
+  outline-offset: 3px;
+}
+
+/* Sisakan ruang untuk navbar yang menempel */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Hormati pengguna yang mematikan animasi di setelan sistemnya */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
