@@ -9,6 +9,7 @@ type Props = {
   ukuran?: "sedang" | "besar";
   panah?: boolean;
   className?: string;
+  onClick?: () => void;
 };
 
 const gayaVarian = {
@@ -28,10 +29,12 @@ export default function Tombol({
   ukuran = "sedang",
   panah = false,
   className = "",
+  onClick,
 }: Props) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`group inline-flex items-center justify-center gap-2.5 rounded-md font-semibold transition-[background-color,border-color] duration-200 ${gayaVarian[varian]} ${gayaUkuran[ukuran]} ${className}`}
     >
       {children}
