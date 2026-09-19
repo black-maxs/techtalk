@@ -1,5 +1,8 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
+import Rundown from "@/components/sections/Rundown";
+import Speaker from "@/components/sections/Speaker";
+import Tentang from "@/components/sections/Tentang";
 import CtaMelayang from "@/components/ui/CtaMelayang";
 
 // Sementara: angka dummy. Di Tahap 4 diambil dari database (jumlah pesanan lunas).
@@ -11,8 +14,9 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero kursiTerisi={KURSI_TERISI} />
-        {/* Sementara: ruang kosong untuk menguji navbar & CTA saat digulir. Dihapus di 3B. */}
-        <div className="h-[150vh]" />
+        <Tentang />
+        <Speaker />
+        <Rundown />
       </main>
       <CtaMelayang />
     </>

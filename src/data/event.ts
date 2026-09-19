@@ -1,4 +1,10 @@
-import type { Faq, JenisTiket, SesiRundown, Speaker } from "@/lib/types";
+import type {
+  Faq,
+  JenisTiket,
+  SesiRundown,
+  Sorotan,
+  Speaker,
+} from "@/lib/types";
 
 export const event = {
   nama: "TechTalk",
@@ -29,6 +35,27 @@ export const navigasi = [
   { label: "Tiket", href: "#tiket" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontak", href: "#kontak" },
+];
+
+export const sorotan: Sorotan[] = [
+  {
+    ikon: "seminar",
+    judul: "Seminar",
+    deskripsi:
+      "Tiga sesi dari praktisi yang membagikan pengalaman nyata membangun produk dan karier di industri teknologi.",
+  },
+  {
+    ikon: "tanya-jawab",
+    judul: "Q&A & Panel Diskusi",
+    deskripsi:
+      "Tanyakan langsung hal yang selama ini bikin penasaran, dari tren AI sampai cara masuk ke industri.",
+  },
+  {
+    ikon: "networking",
+    judul: "Networking",
+    deskripsi:
+      "Kenalan dengan sesama peserta dan pembicara. Siapa tahu jadi awal kolaborasi atau peluang kerja.",
+  },
 ];
 
 export const tiket: JenisTiket[] = [
@@ -67,7 +94,7 @@ export const speakers: Speaker[] = [
     perusahaan: "Nusa Cloud",
     topik: "AI di Dunia Kerja: Ancaman atau Peluang?",
     bio: "Lebih dari 10 tahun membangun sistem berskala besar dan kini memimpin tim engineering yang menerapkan AI pada produk sehari-hari.",
-    foto: "/speakers/raka.jpg",
+    foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&crop=faces&w=800&h=1000&q=80",
   },
   {
     id: "salsa",
@@ -76,7 +103,7 @@ export const speakers: Speaker[] = [
     perusahaan: "Karsa Digital",
     topik: "Merancang Produk Digital yang Manusiawi",
     bio: "Merancang pengalaman pengguna untuk aplikasi fintech dan edutech yang dipakai jutaan orang di Indonesia.",
-    foto: "/speakers/salsa.jpg",
+    foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&crop=faces&w=800&h=1000&q=80",
   },
   {
     id: "dimas",
@@ -85,7 +112,7 @@ export const speakers: Speaker[] = [
     perusahaan: "Lumbung Data",
     topik: "Dari Kampus ke Startup: Membangun Karier di Industri Teknologi",
     bio: "Memulai startup sejak kuliah dan kini aktif membimbing talenta muda agar siap masuk ke industri teknologi.",
-    foto: "/speakers/dimas.jpg",
+    foto: "https://images.unsplash.com/photo-1557862921-37829c790f19?auto=format&fit=crop&crop=faces&w=800&h=1000&q=80",
   },
 ];
 

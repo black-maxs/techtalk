@@ -20,7 +20,8 @@ export type Speaker = {
   perusahaan: string;
   topik: string;
   bio: string;
-  foto: string;
+  /** Path di folder public, misalnya "/speakers/raka.jpg". Kosong = tampil placeholder inisial. */
+  foto?: string;
   linkedin?: string;
 };
 
@@ -45,4 +46,10 @@ export type SesiRundown = {
 export type Faq = {
   pertanyaan: string;
   jawaban: string;
+};
+
+export type Sorotan = {
+  ikon: "seminar" | "tanya-jawab" | "networking";
+  judul: string;
+  deskripsi: string;
 };

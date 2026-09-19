@@ -40,3 +40,13 @@ export function formatJam(iso: string): string {
     timeZone: ZONA_WIB,
   }).format(new Date(iso));
 }
+/** "Raka Pradipta" → "RP" */
+export function inisial(nama: string): string {
+  return nama
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((kata) => kata[0])
+    .join("")
+    .toUpperCase();
+}
