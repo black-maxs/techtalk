@@ -25,3 +25,17 @@ export function useSudahMelewati(idElemen: string | null, jarak = 0): boolean {
     () => false,
   );
 }
+
+/** true jika sebagian elemen sedang tampil di layar */
+export function useSedangTerlihat(idElemen: string): boolean {
+  return useSyncExternalStore(
+    langganGulir,
+    () => {
+      const elemen = document.getElementById(idElemen);
+      if (!elemen) return false;
+      const kotak = elemen.getBoundingClientRect();
+      return kotak.top < window.innerHeight && kotak.bottom > 0;
+    },
+    () => false,
+  );
+}

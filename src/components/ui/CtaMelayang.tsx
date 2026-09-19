@@ -2,18 +2,21 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import Tombol from "@/components/ui/Tombol";
-import { tiket } from "@/data/event";
 import { formatRupiah } from "@/lib/utils";
-import { useSudahMelewati } from "@/lib/useSudahMelewati";
+import { useSedangTerlihat, useSudahMelewati } from "@/lib/useSudahMelewati";
 
-const hargaTermurah = Math.min(...tiket.map((t) => t.harga));
+type Props = {
+  hargaTermurah: number;
+};
 
-export default function CtaMelayang() {
+export default function CtaMelayang({ hargaTermurah }: Props) {
   const lewatHero = useSudahMelewati("hero", 0);
+  const tiketTerlihat = useSedangTerlihat("tiket");
+  const tampil = lewatHero && !tiketTerlihat;
 
   return (
     <AnimatePresence>
-      {lewatHero && (
+      {tampil && (
         <motion.div
           initial={{ y: "100%" }}
           animate={{ y: 0 }}

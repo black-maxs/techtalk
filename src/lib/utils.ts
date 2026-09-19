@@ -50,3 +50,16 @@ export function inisial(nama: string): string {
     .join("")
     .toUpperCase();
 }
+/** "2026-10-05T23:59:59+07:00" → "5 Okt" */
+export function formatTanggalSingkat(iso: string): string {
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "short",
+    timeZone: ZONA_WIB,
+  }).format(new Date(iso));
+}
+
+/** Link WhatsApp dengan pesan yang sudah terisi */
+export function waLink(nomor: string, pesan: string): string {
+  return `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
+}

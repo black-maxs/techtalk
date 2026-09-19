@@ -202,6 +202,10 @@ export const faq: Faq[] = [
 // DUMMY
 export const kontak = {
   email: "halo@techtalk.id",
-  whatsapp: "6281234567890", // format internasional tanpa +
+  whatsapp: "6281234567890", // format internasional tanpa +, dipakai untuk link wa.me
+  whatsappTampil: "+62 812-3456-7890",
+  pesanWhatsApp: "Halo panitia TechTalk, saya ingin bertanya tentang ",
   instagram: "techtalk.id",
 };
+
+export const kredit = "Dibuat oleh Derma Setya Graha · Proyek portofolio";
