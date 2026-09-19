@@ -8,7 +8,7 @@ import { event } from "@/data/event";
 import { formatJam, formatTanggal, formatTanggalPendek } from "@/lib/utils";
 
 type Props = {
-  kursiTerisi: number;
+  kursiTerisi: number | null;
 };
 
 export default function Hero({ kursiTerisi }: Props) {

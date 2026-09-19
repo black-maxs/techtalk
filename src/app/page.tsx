@@ -9,21 +9,23 @@ import Speaker from "@/components/sections/Speaker";
 import Tentang from "@/components/sections/Tentang";
 import Tiket from "@/components/sections/Tiket";
 import CtaMelayang from "@/components/ui/CtaMelayang";
+import { event } from "@/data/event";
+import { hitungKursiTerisi } from "@/lib/pesanan";
 import { daftarTiket, hargaTermurah } from "@/lib/tiket";
 
-// Sementara: angka dummy. Di Tahap 4 diambil dari database (jumlah pesanan lunas).
-const KURSI_TERISI = 58;
-
 export default async function Home() {
-  // Render ulang untuk setiap pengunjung, supaya status tiket (Early Bird) selalu sesuai waktu sekarang
+  // Render ulang untuk setiap pengunjung, supaya status tiket (Early Bird)
+  // dan jumlah kursi terisi selalu sesuai kondisi saat ini
   await connection();
-  const semuaTiket = daftarTiket();
+  const kursiTerisi = await hitungKursiTerisi();
+  const semuaTiket = daftarTiket({ penuh: kursiTerisi !== null && kursiTerisi >= event.kuota });
+  const termurah = hargaTermurah(semuaTiket);
 
   return (
     <>
       <Navbar />
       <main>
-        <Hero kursiTerisi={KURSI_TERISI} />
+        <Hero kursiTerisi={kursiTerisi} />
         <Tentang />
         <Speaker />
         <Rundown />
@@ -32,7 +34,7 @@ export default async function Home() {
         <Kontak />
       </main>
       <Footer />
-      <CtaMelayang hargaTermurah={hargaTermurah(semuaTiket)} />
+      {termurah !== null && <CtaMelayang hargaTermurah={termurah} />}
     </>
   );
 }

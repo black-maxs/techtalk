@@ -9,7 +9,13 @@ import { formatRupiah, formatTanggalSingkat } from "@/lib/utils";
 const gayaBadge = "rounded-full px-2.5 py-1 font-mono text-[11px] tracking-wider whitespace-nowrap uppercase";
 
 function Badge({ t }: { t: TiketDenganStatus }) {
-  if (!t.tersedia) return <span className={`${gayaBadge} border border-garis-kuat text-redup`}>Berakhir</span>;
+  if (!t.tersedia) {
+    return (
+      <span className={`${gayaBadge} border border-garis-kuat text-redup`}>
+        {t.alasan === "habis" ? "Habis" : "Berakhir"}
+      </span>
+    );
+  }
   if (t.unggulan) return <span className={`${gayaBadge} bg-aksen text-latar`}>Paling diminati</span>;
   if (t.berlakuSampai) {
     return (

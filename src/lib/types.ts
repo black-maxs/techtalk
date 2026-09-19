@@ -53,3 +53,22 @@ export type Sorotan = {
   judul: string;
   deskripsi: string;
 };
+
+export type StatusPesanan = "pending" | "paid" | "expired" | "failed";
+
+/** Satu baris tabel `pesanan` di Supabase. Nama kolom mengikuti database (snake_case). */
+export type Pesanan = {
+  id: string;
+  kode: string;
+  nama: string;
+  email: string;
+  whatsapp: string;
+  instansi: string;
+  jenis_tiket: IdTiket;
+  harga: number;
+  status: StatusPesanan;
+  dibuat_pada: string;
+  kedaluwarsa_pada: string;
+  dibayar_pada: string | null;
+  check_in_pada: string | null;
+};
