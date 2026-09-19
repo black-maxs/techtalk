@@ -7,11 +7,15 @@ import { Menu, X } from "lucide-react";
 import Container from "@/components/ui/Container";
 import Tombol from "@/components/ui/Tombol";
 import { navigasi } from "@/data/event";
-import { useSudahMelewati } from "@/lib/useSudahMelewati";
+import { useSectionAktif, useSudahMelewati } from "@/lib/useSudahMelewati";
+
+// "#tentang" → "tentang". Dibuat di luar komponen supaya array-nya tidak dibuat ulang setiap render.
+const idSection = navigasi.map((item) => item.href.slice(1));
 
 export default function Navbar() {
   const [menuTerbuka, setMenuTerbuka] = useState(false);
   const sudahGulir = useSudahMelewati(null, 8);
+  const sectionAktif = useSectionAktif(idSection);
   const tampilLatar = sudahGulir || menuTerbuka;
   const tutupMenu = () => setMenuTerbuka(false);
 
@@ -28,13 +32,27 @@ export default function Navbar() {
 
         <nav aria-label="Navigasi utama" className="hidden md:block">
           <ul className="flex items-center gap-8 text-[15px] text-redup">
-            {navigasi.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="transition-colors hover:text-teks">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {navigasi.map((item) => {
+              const aktif = sectionAktif === item.href.slice(1);
+              return (
+                <li key={item.href} className="relative">
+                  <Link
+                    href={item.href}
+                    aria-current={aktif ? "location" : undefined}
+                    className={`transition-colors ${aktif ? "text-teks" : "hover:text-teks"}`}
+                  >
+                    {item.label}
+                  </Link>
+                  {aktif && (
+                    <motion.span
+                      layoutId="penanda-nav"
+                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                      className="absolute inset-x-0 -bottom-2 h-px bg-aksen"
+                    />
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
@@ -67,16 +85,22 @@ export default function Navbar() {
             className="overflow-hidden border-t border-garis md:hidden"
           >
             <Container className="flex flex-col gap-1 py-4">
-              {navigasi.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={tutupMenu}
-                  className="rounded-md px-3 py-3 text-lg text-redup hover:bg-teks/5 hover:text-teks"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navigasi.map((item) => {
+                const aktif = sectionAktif === item.href.slice(1);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={tutupMenu}
+                    aria-current={aktif ? "location" : undefined}
+                    className={`rounded-md px-3 py-3 text-lg hover:bg-teks/5 hover:text-teks ${
+                      aktif ? "text-aksen" : "text-redup"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               <Tombol href="#tiket" ukuran="besar" panah onClick={tutupMenu} className="mt-3 sm:hidden">
                 Daftar Sekarang
               </Tombol>

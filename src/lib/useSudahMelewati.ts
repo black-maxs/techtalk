@@ -39,3 +39,23 @@ export function useSedangTerlihat(idElemen: string): boolean {
     () => false,
   );
 }
+
+/**
+ * id section yang sedang dibaca: section terakhir yang bagian atasnya
+ * sudah melewati garis 40% tinggi layar. null jika masih di hero.
+ */
+export function useSectionAktif(daftarId: string[]): string | null {
+  return useSyncExternalStore(
+    langganGulir,
+    () => {
+      const batas = window.innerHeight * 0.4;
+      let aktif: string | null = null;
+      for (const id of daftarId) {
+        const elemen = document.getElementById(id);
+        if (elemen && elemen.getBoundingClientRect().top <= batas) aktif = id;
+      }
+      return aktif;
+    },
+    () => null,
+  );
+}

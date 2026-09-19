@@ -1,3 +1,4 @@
+import BarisSesi from "@/components/ui/BarisSesi";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -40,8 +41,10 @@ export default function Rundown() {
               const utama = jenisUtama.includes(sesi.jenis);
 
               return (
-                <li
+                <BarisSesi
                   key={sesi.mulai}
+                  mulai={sesi.mulai}
+                  selesai={sesi.selesai}
                   className="grid gap-3 border-b border-garis py-6 md:grid-cols-[10rem_8rem_minmax(0,1fr)] md:items-baseline md:gap-8 md:py-7"
                 >
                   <div className="flex items-center gap-3 md:contents">
@@ -69,7 +72,7 @@ export default function Rundown() {
                     )}
                     {sesi.deskripsi && <p className="text-[15px] text-redup">{sesi.deskripsi}</p>}
                   </div>
-                </li>
+                </BarisSesi>
               );
             })}
           </ol>
