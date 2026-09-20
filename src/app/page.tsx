@@ -12,18 +12,28 @@ import CtaMelayang from "@/components/ui/CtaMelayang";
 import { event } from "@/data/event";
 import { hitungKursiTerisi } from "@/lib/pesanan";
 import { daftarTiket, hargaTermurah } from "@/lib/tiket";
+import { dataEvent } from "@/lib/jsonLd";
 
 export default async function Home() {
   // Render ulang untuk setiap pengunjung, supaya status tiket (Early Bird)
   // dan jumlah kursi terisi selalu sesuai kondisi saat ini
   await connection();
   const kursiTerisi = await hitungKursiTerisi();
-  const semuaTiket = daftarTiket({ penuh: kursiTerisi !== null && kursiTerisi >= event.kuota });
+  const semuaTiket = daftarTiket({
+    penuh: kursiTerisi !== null && kursiTerisi >= event.kuota,
+  });
   const termurah = hargaTermurah(semuaTiket);
 
   return (
     <>
       <Navbar />
+      <script
+        type="application/ld+json"
+        // \u003c mencegah teks data menutup tag <script> lebih awal (celah XSS klasik)
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(dataEvent()).replace(/</g, "\\u003c"),
+        }}
+      />
       <main>
         <Hero kursiTerisi={kursiTerisi} />
         <Tentang />

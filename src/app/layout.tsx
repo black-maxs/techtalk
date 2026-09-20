@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
+import { event, speakers } from "@/data/event";
+import { formatTanggal } from "@/lib/utils";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -15,10 +17,31 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
+const judul = `${event.nama} ${event.tahun} — ${event.tema}`;
+const deskripsi = `Seminar teknologi bersama ${speakers.length} praktisi industri, ${formatTanggal(event.mulai)} di ${event.venue.kota}. Daftar online dan amankan kursimu.`;
+
 export const metadata: Metadata = {
-  title: "TechTalk 2026 — The Future of Technology & Digital Innovation",
-  description:
-    "Seminar teknologi bersama praktisi industri. 25 Oktober 2026. Daftar sekarang dan amankan kursimu.",
+  // Dipakai sebagai dasar semua URL relatif di metadata (OG image, canonical, dll.)
+  metadataBase: new URL(event.url),
+  title: {
+    default: judul,
+    template: `%s — ${event.nama} ${event.tahun}`,
+  },
+  description: deskripsi,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "/",
+    siteName: `${event.nama} ${event.tahun}`,
+    title: judul,
+    description: deskripsi,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: judul,
+    description: deskripsi,
+  },
 };
 
 export const viewport: Viewport = {
