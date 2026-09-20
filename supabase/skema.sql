@@ -28,6 +28,8 @@ create index if not exists pesanan_email_idx on public.pesanan (email);
 
 -- Token Snap Midtrans, disimpan agar pesanan yang sama tidak membuat transaksi baru
 alter table public.pesanan add column if not exists snap_token text;
+-- Penanda e-tiket sudah dikirim, supaya notifikasi ulang tidak mengirim email dua kali
+alter table public.pesanan add column if not exists email_terkirim_pada timestamptz;
 
 -- ─── Keamanan: Row Level Security ───────────────────────────────────────────
 -- RLS aktif TANPA policy apa pun → kunci publik (anon) dan user login

@@ -72,4 +72,5 @@ export type Pesanan = {
   dibayar_pada: string | null;
   check_in_pada: string | null;
   snap_token: string | null;
+  email_terkirim_pada: string | null;
 };

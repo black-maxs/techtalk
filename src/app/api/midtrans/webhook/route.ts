@@ -1,7 +1,8 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
-import { terapkanNotifikasi } from "@/lib/pesanan";
 import type { StatusPesanan } from "@/lib/types";
+import { kirimEmailTiket } from "@/lib/email";
+import { tandaiEmailTerkirim, terapkanNotifikasi } from "@/lib/pesanan";
 
 type Notifikasi = {
   order_id?: string;
@@ -70,8 +71,28 @@ export async function POST(request: Request) {
     notifikasi.transaction_status,
     notifikasi.fraud_status,
   );
+
   if (statusBaru) {
-    await terapkanNotifikasi(order_id, statusBaru, Number(gross_amount));
+    const hasil = await terapkanNotifikasi(
+      order_id,
+      statusBaru,
+      Number(gross_amount),
+    );
+
+    // Kirim e-tiket sekali saja, dan jangan sampai gagalnya email membuat webhook error
+    if (
+      hasil.baruLunas &&
+      hasil.pesanan &&
+      !hasil.pesanan.email_terkirim_pada
+    ) {
+      try {
+        if (await kirimEmailTiket(hasil.pesanan)) {
+          await tandaiEmailTerkirim(order_id);
+        }
+      } catch (e) {
+        console.error("Gagal mengirim e-tiket:", e);
+      }
+    }
   }
 
   // Selalu balas 200 untuk notifikasi yang sah, supaya Midtrans tidak mengirim ulang

@@ -110,6 +110,12 @@ export async function simpanTokenSnap(
   if (error) console.error("Gagal menyimpan snap_token:", error.message);
 }
 
+export type HasilNotifikasi = {
+  /** true hanya pada saat pesanan BARU berubah menjadi lunas */
+  baruLunas: boolean;
+  pesanan: Pesanan | null;
+};
+
 /**
  * Menerapkan hasil notifikasi Midtrans ke satu pesanan.
  * Hanya dipanggil dari webhook, setelah tanda tangannya diverifikasi.
@@ -118,36 +124,55 @@ export async function terapkanNotifikasi(
   kode: string,
   statusBaru: StatusPesanan,
   jumlahDibayar: number,
-): Promise<void> {
+): Promise<HasilNotifikasi> {
   const db = supabaseServer();
-  if (!db) return;
+  if (!db) return { baruLunas: false, pesanan: null };
 
   const pesanan = await ambilPesanan(kode);
   if (!pesanan) {
     console.warn("Webhook: pesanan tidak ditemukan:", kode);
-    return;
+    return { baruLunas: false, pesanan: null };
   }
 
   // Midtrans bisa mengirim notifikasi yang sama berkali-kali. Yang sudah lunas jangan diubah lagi.
-  if (pesanan.status === "paid") return;
+  if (pesanan.status === "paid") return { baruLunas: false, pesanan };
 
   // Penjagaan terakhir: nominal yang dibayar harus sama persis dengan harga di database kita
   if (statusBaru === "paid" && jumlahDibayar !== pesanan.harga) {
     console.error(
       `Webhook: nominal tidak cocok untuk ${kode}. Dibayar ${jumlahDibayar}, seharusnya ${pesanan.harga}`,
     );
-    return;
+    return { baruLunas: false, pesanan };
   }
 
+  const dibayarPada = new Date().toISOString();
   const { error } = await db
     .from("pesanan")
     .update({
       status: statusBaru,
-      ...(statusBaru === "paid"
-        ? { dibayar_pada: new Date().toISOString() }
-        : {}),
+      ...(statusBaru === "paid" ? { dibayar_pada: dibayarPada } : {}),
     })
     .eq("kode", kode);
 
-  if (error) console.error("Webhook: gagal memperbarui status:", error.message);
+  if (error) {
+    console.error("Webhook: gagal memperbarui status:", error.message);
+    return { baruLunas: false, pesanan };
+  }
+
+  return {
+    baruLunas: statusBaru === "paid",
+    pesanan: { ...pesanan, status: statusBaru, dibayar_pada: dibayarPada },
+  };
+}
+
+export async function tandaiEmailTerkirim(kode: string): Promise<void> {
+  const db = supabaseServer();
+  if (!db) return;
+
+  const { error } = await db
+    .from("pesanan")
+    .update({ email_terkirim_pada: new Date().toISOString() })
+    .eq("kode", kode);
+
+  if (error) console.error("Gagal menandai email terkirim:", error.message);
 }
