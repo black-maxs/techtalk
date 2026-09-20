@@ -25,7 +25,7 @@ export const event = {
   },
   kuota: 200,
   format: ["Seminar", "Q&A", "Networking"],
-  url: "http://localhost:3000", // ganti dengan domain produksi saat deploy
+  url: "http://techtalk-drab.vercel.app",
 } as const;
 
 export const navigasi = [
