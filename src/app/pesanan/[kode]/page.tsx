@@ -125,15 +125,24 @@ export default async function HalamanPesanan({ params }: Props) {
           )}
 
           {status === "paid" && (
-            <p className="flex items-start gap-3 rounded-xl border border-aksen/30 bg-aksen/5 p-7 leading-relaxed">
-              <CircleCheck
-                strokeWidth={1.8}
-                className="mt-0.5 size-5 shrink-0 text-aksen"
-              />
-              Terima kasih! E-tiket ber-QR dikirim ke {pesanan.email}. Tunjukkan
-              QR tersebut saat check-in di lokasi acara,{" "}
-              {formatTanggal(event.mulai)}.
-            </p>
+            <div className="flex flex-col gap-5 rounded-xl border border-aksen/30 bg-aksen/5 p-7 sm:p-8">
+              <p className="flex items-start gap-3 leading-relaxed">
+                <CircleCheck
+                  strokeWidth={1.8}
+                  className="mt-0.5 size-5 shrink-0 text-aksen"
+                />
+                Terima kasih! Tiketmu sudah aktif. Tunjukkan QR code saat
+                check-in di lokasi acara, {formatTanggal(event.mulai)}.
+              </p>
+              <Tombol
+                href={`/tiket/${pesanan.kode}`}
+                ukuran="besar"
+                panah
+                className="w-full sm:w-fit"
+              >
+                Lihat E-Tiket
+              </Tombol>
+            </div>
           )}
 
           {(status === "expired" || status === "failed") && (
