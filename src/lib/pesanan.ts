@@ -2,7 +2,7 @@ import "server-only";
 import { randomInt } from "node:crypto";
 import { event } from "@/data/event";
 import { supabaseServer } from "@/lib/supabase";
-import type { IdTiket, Pesanan } from "@/lib/types";
+import type { IdTiket, Pesanan, StatusPesanan } from "@/lib/types";
 
 /**
  * Jumlah kursi terisi (pesanan lunas + pesanan pending yang belum kedaluwarsa).
@@ -108,4 +108,46 @@ export async function simpanTokenSnap(
     .update({ snap_token: token })
     .eq("kode", kode);
   if (error) console.error("Gagal menyimpan snap_token:", error.message);
+}
+
+/**
+ * Menerapkan hasil notifikasi Midtrans ke satu pesanan.
+ * Hanya dipanggil dari webhook, setelah tanda tangannya diverifikasi.
+ */
+export async function terapkanNotifikasi(
+  kode: string,
+  statusBaru: StatusPesanan,
+  jumlahDibayar: number,
+): Promise<void> {
+  const db = supabaseServer();
+  if (!db) return;
+
+  const pesanan = await ambilPesanan(kode);
+  if (!pesanan) {
+    console.warn("Webhook: pesanan tidak ditemukan:", kode);
+    return;
+  }
+
+  // Midtrans bisa mengirim notifikasi yang sama berkali-kali. Yang sudah lunas jangan diubah lagi.
+  if (pesanan.status === "paid") return;
+
+  // Penjagaan terakhir: nominal yang dibayar harus sama persis dengan harga di database kita
+  if (statusBaru === "paid" && jumlahDibayar !== pesanan.harga) {
+    console.error(
+      `Webhook: nominal tidak cocok untuk ${kode}. Dibayar ${jumlahDibayar}, seharusnya ${pesanan.harga}`,
+    );
+    return;
+  }
+
+  const { error } = await db
+    .from("pesanan")
+    .update({
+      status: statusBaru,
+      ...(statusBaru === "paid"
+        ? { dibayar_pada: new Date().toISOString() }
+        : {}),
+    })
+    .eq("kode", kode);
+
+  if (error) console.error("Webhook: gagal memperbarui status:", error.message);
 }
