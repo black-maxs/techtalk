@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Download, Eraser } from "lucide-react";
 import { bersihkan } from "@/app/admin/actions";
 import KartuRingkasan from "@/components/admin/KartuRingkasan";
 import TabelPeserta from "@/components/admin/TabelPeserta";
 import Container from "@/components/ui/Container";
 import { daftarPeserta, ringkasanPeserta } from "@/lib/admin";
 import type { StatusPesanan } from "@/lib/types";
+import Link from "next/link";
+import { Download, Eraser, ScanLine } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Dashboard Panitia — TechTalk 2026",
@@ -46,6 +47,14 @@ export default async function HalamanAdmin({ searchParams }: Props) {
             {peserta.length} baris ditampilkan
           </p>
         </div>
+
+        <Link
+          href="/admin/checkin"
+          className="flex items-center gap-2 rounded-md border border-aksen/50 px-4 py-2.5 text-sm font-medium text-aksen transition-colors hover:border-aksen"
+        >
+          <ScanLine className="size-4" />
+          Scanner check-in
+        </Link>
 
         <div className="flex flex-wrap gap-2">
           <form action={bersihkan}>
