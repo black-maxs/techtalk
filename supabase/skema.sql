@@ -26,6 +26,9 @@ create table if not exists public.pesanan (
 create index if not exists pesanan_status_idx on public.pesanan (status, kedaluwarsa_pada);
 create index if not exists pesanan_email_idx on public.pesanan (email);
 
+-- Token Snap Midtrans, disimpan agar pesanan yang sama tidak membuat transaksi baru
+alter table public.pesanan add column if not exists snap_token text;
+
 -- ─── Keamanan: Row Level Security ───────────────────────────────────────────
 -- RLS aktif TANPA policy apa pun → kunci publik (anon) dan user login
 -- (authenticated) tidak bisa membaca atau menulis satu baris pun.

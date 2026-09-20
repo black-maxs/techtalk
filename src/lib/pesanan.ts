@@ -24,7 +24,11 @@ export async function ambilPesanan(kode: string): Promise<Pesanan | null> {
   const db = supabaseServer();
   if (!db) return null;
 
-  const { data, error } = await db.from("pesanan").select("*").eq("kode", kode).maybeSingle();
+  const { data, error } = await db
+    .from("pesanan")
+    .select("*")
+    .eq("kode", kode)
+    .maybeSingle();
   if (error) {
     console.error("Gagal mengambil pesanan:", error.message);
     return null;
@@ -38,7 +42,10 @@ const HURUF_KODE = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 /** "TT26-7KQ2M-XH4PA". 31^10 kombinasi, jadi tidak bisa ditebak. */
 function buatKodeTiket(): string {
   const acak = (panjang: number) =>
-    Array.from({ length: panjang }, () => HURUF_KODE[randomInt(HURUF_KODE.length)]).join("");
+    Array.from(
+      { length: panjang },
+      () => HURUF_KODE[randomInt(HURUF_KODE.length)],
+    ).join("");
   return `TT${String(event.tahun).slice(2)}-${acak(5)}-${acak(5)}`;
 }
 
@@ -56,7 +63,9 @@ export type HasilBuatPesanan =
   | { ok: true; pesanan: Pesanan }
   | { ok: false; alasan: "tidak-terhubung" | "kuota-penuh" | "gagal" };
 
-export async function buatPesanan(data: DataPesananBaru): Promise<HasilBuatPesanan> {
+export async function buatPesanan(
+  data: DataPesananBaru,
+): Promise<HasilBuatPesanan> {
   const db = supabaseServer();
   if (!db) return { ok: false, alasan: "tidak-terhubung" };
 
@@ -76,7 +85,8 @@ export async function buatPesanan(data: DataPesananBaru): Promise<HasilBuatPesan
       .single();
 
     if (!error) return { ok: true, pesanan: pesanan as Pesanan };
-    if (error.message.includes("KUOTA_PENUH")) return { ok: false, alasan: "kuota-penuh" };
+    if (error.message.includes("KUOTA_PENUH"))
+      return { ok: false, alasan: "kuota-penuh" };
     if (error.code === "23505") continue; // unique_violation: kode tiket bentrok
 
     console.error("Gagal membuat pesanan:", error.message);
@@ -84,4 +94,18 @@ export async function buatPesanan(data: DataPesananBaru): Promise<HasilBuatPesan
   }
 
   return { ok: false, alasan: "gagal" };
+}
+
+export async function simpanTokenSnap(
+  kode: string,
+  token: string,
+): Promise<void> {
+  const db = supabaseServer();
+  if (!db) return;
+
+  const { error } = await db
+    .from("pesanan")
+    .update({ snap_token: token })
+    .eq("kode", kode);
+  if (error) console.error("Gagal menyimpan snap_token:", error.message);
 }

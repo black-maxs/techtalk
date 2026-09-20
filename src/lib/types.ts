@@ -71,4 +71,5 @@ export type Pesanan = {
   kedaluwarsa_pada: string;
   dibayar_pada: string | null;
   check_in_pada: string | null;
+  snap_token: string | null;
 };
