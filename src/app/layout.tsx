@@ -61,7 +61,15 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="latar-grid">
-        <MotionProvider>{children}</MotionProvider>
+        <a
+          href="#konten"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-60 focus:rounded-md focus:bg-aksen focus:px-4 focus:py-3 focus:font-semibold focus:text-latar"
+        >
+          Lewati ke konten utama
+        </a>
+        <MotionProvider>
+          <div id="konten">{children}</div>
+        </MotionProvider>
       </body>
     </html>
   );
