@@ -11,7 +11,7 @@ import { statusSaatIni } from "@/lib/statusPesanan";
 import { formatJam, formatTanggal } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "E-Tiket — TechTalk 2026",
+  title: "E-Tiket",
   robots: { index: false, follow: false },
 };
 

@@ -9,7 +9,7 @@ import { daftarTiket } from "@/lib/tiket";
 import { formatJam, formatTanggal } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Daftar — TechTalk 2026",
+  title: "Daftar",
   description: "Isi data diri untuk mendaftar TechTalk 2026 dan amankan kursimu.",
 };
 

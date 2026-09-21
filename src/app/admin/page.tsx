@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Download, Eraser, ScanLine } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Dashboard Panitia — TechTalk 2026",
+  title: "Dashboard Panitia",
   robots: { index: false, follow: false },
 };
 

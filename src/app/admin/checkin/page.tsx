@@ -5,7 +5,7 @@ import Scanner from "@/components/admin/Scanner";
 import Container from "@/components/ui/Container";
 
 export const metadata: Metadata = {
-  title: "Check-in Peserta — TechTalk 2026",
+  title: "Check-in Peserta",
   robots: { index: false, follow: false },
 };
 

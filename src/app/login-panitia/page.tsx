@@ -3,7 +3,7 @@ import FormLogin from "@/components/admin/FormLogin";
 import Container from "@/components/ui/Container";
 
 export const metadata: Metadata = {
-  title: "Login Panitia — TechTalk 2026",
+  title: "Login Panitia",
   robots: { index: false, follow: false },
 };
 

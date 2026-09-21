@@ -70,7 +70,6 @@ export default function Scanner() {
       dibatalkan = true;
       kendali?.stop();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

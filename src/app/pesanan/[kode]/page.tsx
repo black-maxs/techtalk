@@ -12,7 +12,7 @@ import { formatJam, formatRupiah, formatTanggal } from "@/lib/utils";
 import TombolBayar from "@/components/pesanan/TombolBayar";
 
 export const metadata: Metadata = {
-  title: "Pesanan — TechTalk 2026",
+  title: "Pesanan",
   // Halaman pribadi peserta: jangan muncul di hasil pencarian
   robots: { index: false, follow: false },
 };
